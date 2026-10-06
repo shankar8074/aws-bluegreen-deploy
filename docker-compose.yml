@@ -1,0 +1,37 @@
+# Local dev only — NOT used in production. On the EC2 app server, Jenkins uses
+# deploy/compose.db.yml + deploy/compose.app.yml instead, so it can run two app
+# containers (blue/green) against one shared database. This file just runs one
+# of each, which is all you need on a laptop.
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: expense
+      POSTGRES_PASSWORD: expense
+      POSTGRES_DB: expense
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U expense"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  app:
+    build: ./app
+    ports:
+      - "3000:3000"
+    environment:
+      PGHOST: db
+      PGPORT: 5432
+      PGUSER: expense
+      PGPASSWORD: expense
+      PGDATABASE: expense
+      APP_VERSION: local-dev
+      COLOR: local
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  pgdata:

@@ -1,0 +1,18 @@
+{
+  "name": "expense-tracker-app",
+  "version": "1.0.0",
+  "description": "Tiny Express + Postgres expense tracker used for the blue-green deploy demo",
+  "private": true,
+  "type": "commonjs",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node src/server.js",
+    "test": "node --test"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "pg": "^8.12.0"
+  }
+}
