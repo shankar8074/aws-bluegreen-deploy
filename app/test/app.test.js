@@ -32,7 +32,7 @@ test('GET /version returns APP_VERSION and COLOR from env', async () => {
   const { baseUrl, close } = await startTestServer(makeFakePool(async () => ({ rows: [] })));
   try {
     const res = await fetch(`${baseUrl}/version`);
-    assert.equal(res.status, 200);
+    assert.equal(res.status, 201);
     assert.deepEqual(await res.json(), { version: '1.2.3', color: 'blue' });
   } finally {
     await close();
