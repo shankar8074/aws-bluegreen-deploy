@@ -1,0 +1,18 @@
+services:
+  app:
+    image: ${IMAGE:?IMAGE is required}
+    container_name: app-${DEPLOY_COLOR:?DEPLOY_COLOR is required}
+    restart: unless-stopped
+    ports:
+      - "${HOST_PORT:?HOST_PORT is required}:3000"
+    environment:
+      DB_HOST: expenses-db
+      DB_PASSWORD: ${DB_PASSWORD:?DB_PASSWORD is required}
+      APP_VERSION: ${APP_VERSION:-unknown}
+      DEPLOY_COLOR: ${DEPLOY_COLOR}
+    networks:
+      - app-net
+
+networks:
+  app-net:
+    external: true
